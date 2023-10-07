@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\PartnersInfo;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,5 +19,6 @@ Route::get('/', function () {
 });
 
 Route::get('/test', function(){
-    return view("test");
+    $partnerInfos = PartnersInfo::find(7);
+    return view("test", compact('partnerInfos'));
 } );

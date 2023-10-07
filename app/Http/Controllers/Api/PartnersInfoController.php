@@ -72,9 +72,17 @@ class PartnersInfoController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(PartnersInfoRequest $request, string $id)
     {
-        //
+        $data = $request->validated();
+        // dd($data);
+        try {
+            $created = $this->partnersInfoService->createOrUpdate($data, $id);
+            return $this->sendResponse( new PartnersInfoResource($created), 'Partner Infos Updated');
+        } catch (\Exception $th) {
+            return $this->sendError('error.', ['error'=>$th->getMessage()]);
+        }
+
     }
 
     /**

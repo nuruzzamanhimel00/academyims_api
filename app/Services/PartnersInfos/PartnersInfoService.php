@@ -26,8 +26,14 @@ class PartnersInfoService extends BaseService{
     {
         try {
             if ($id) {
+                $object = $this->model->findOrFail($id);
+                $delete_path =  GlobalConstant::PARTNERS_IMAGE_PATH."/".$object->signature;
+                $data['signature'] = $this->fileUploadService->uploadBase64File($data['signature'], GlobalConstant::PARTNERS_IMAGE_PATH, null, $delete_path
+                ,  300,  150,  GlobalConstant::IMAGE_RESIZE);
 
-                return $this->model->findOrFail($id)->update($data);
+                return $object->updateOrCreate([
+                    'id' => $id
+                ],$data);
             } else {
 
                 $data['signature'] = $this->fileUploadService->uploadBase64File($data['signature'], GlobalConstant::PARTNERS_IMAGE_PATH, null,null
