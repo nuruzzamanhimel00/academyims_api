@@ -18,6 +18,6 @@ class PartnersInfo extends Model
         'upazila_thana',
         'district',
         'division',
-        'partner_sign',
+        'signature',
     ];
 }

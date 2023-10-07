@@ -24,8 +24,8 @@ class PartnersInfoResource extends JsonResource
             'upazila_thana' => $this->upazila_thana,
             'District' => $this->District,
             'division' => $this->division,
-            'partner_sign' => $this->partner_sign,
+            'signature' => $this->signature,
         ];
-        // return parent::toArray($request);
+
     }
 }

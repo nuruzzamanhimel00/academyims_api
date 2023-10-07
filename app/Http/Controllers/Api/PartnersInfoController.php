@@ -6,12 +6,18 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\PartnersInfoRequest;
 use App\Http\Resources\PartnersInfoResource;
 use App\Models\PartnersInfo;
+use App\Services\PartnersInfos\PartnersInfoService;
 use App\Traits\BaseTrait;
 use Illuminate\Http\Request;
 
 class PartnersInfoController extends Controller
 {
     use BaseTrait;
+    protected $partnersInfoService;
+    public function __construct()
+    {
+        $this->partnersInfoService = resolve(PartnersInfoService::class);
+    }
     /**
      * Display a listing of the resource.
      */
@@ -34,8 +40,10 @@ class PartnersInfoController extends Controller
     public function store(PartnersInfoRequest $request)
     {
         $data = $request->validated();
+        // dd($data);
         try {
-            $created = PartnersInfo::create($data);
+            // $created = PartnersInfo::create($data);
+            $created = $this->partnersInfoService->createOrUpdate($data);
             return $this->sendResponse( new PartnersInfoResource($created), 'Partner Infos Created');
         } catch (\Exception $th) {
             return $this->sendError('error.', ['error'=>$th->getMessage()]);

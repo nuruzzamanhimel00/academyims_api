@@ -18,10 +18,10 @@ return new class extends Migration
             $table->string('partner_code',30)->nullable()->unique();
             $table->string('mobile',20);
             $table->string('email',100)->unique();
-            $table->string('upazila_thana',30);
-            $table->string('district',30);
-            $table->string('division',30);
-            $table->string('partner_sign',200);
+            $table->string('upazila_thana',100);
+            $table->string('district',100);
+            $table->string('division',100);
+            $table->string('signature',200);
             $table->timestamps();
         });
     }
