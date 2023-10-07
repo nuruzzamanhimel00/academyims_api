@@ -28,6 +28,16 @@ class PartnersInfoController extends Controller
         //
     }
 
+    public function getPartnersInfo(Request $request){
+        $select = $request->select;
+        $parnerInfos = PartnersInfo::query()
+        ->when(!is_null($select), function($query) use($select){
+            $query->select($select);
+        })
+        ->paginate($request->per_page ?? 30);
+        return PartnersInfoResource::collection($parnerInfos);
+    }
+
     /**
      * Show the form for creating a new resource.
      */
@@ -75,7 +85,7 @@ class PartnersInfoController extends Controller
     public function update(PartnersInfoRequest $request, string $id)
     {
         $data = $request->validated();
-        // dd($data);
+
         try {
             $created = $this->partnersInfoService->createOrUpdate($data, $id);
             return $this->sendResponse( new PartnersInfoResource($created), 'Partner Infos Updated');

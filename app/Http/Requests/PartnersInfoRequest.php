@@ -22,6 +22,7 @@ class PartnersInfoRequest extends FormRequest
      */
     public function rules(): array
     {
+
         return [
             'partner_name' => ['required','string','max:100'],
             'partner_type' => ['required','string','max:30'],
@@ -31,7 +32,7 @@ class PartnersInfoRequest extends FormRequest
             'upazila_thana' => ['required','string','max:100'],
             'district' => ['required','string','max:100'],
             'division' => ['required','string','max:100'],
-            'signature' => ['required','string'],
+            'signature' => [request()->isMethod('post') ? 'required': 'nullable','string'],
         ];
     }
 }

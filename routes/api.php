@@ -26,6 +26,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
  //personal info create
  Route::apiResource('partner-info', PartnersInfoController::class);
+ Route::get('get-partner-infos', [PartnersInfoController::class,'getPartnersInfo']);
+
  Route::middleware('auth:api')->group( function () {
     Route::get('users-get', [AuthController::class,'getUsers']);
 });
