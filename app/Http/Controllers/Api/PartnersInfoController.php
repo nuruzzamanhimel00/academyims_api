@@ -8,7 +8,9 @@ use App\Http\Resources\PartnersInfoResource;
 use App\Models\PartnersInfo;
 use App\Services\PartnersInfos\PartnersInfoService;
 use App\Traits\BaseTrait;
+use App\Utils\GlobalConstant;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class PartnersInfoController extends Controller
 {
@@ -40,9 +42,8 @@ class PartnersInfoController extends Controller
     public function store(PartnersInfoRequest $request)
     {
         $data = $request->validated();
-        // dd($data);
+
         try {
-            // $created = PartnersInfo::create($data);
             $created = $this->partnersInfoService->createOrUpdate($data);
             return $this->sendResponse( new PartnersInfoResource($created), 'Partner Infos Created');
         } catch (\Exception $th) {

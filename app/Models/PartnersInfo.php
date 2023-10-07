@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Utils\GlobalConstant;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -20,4 +21,10 @@ class PartnersInfo extends Model
         'division',
         'signature',
     ];
+
+    protected $appends = ['signature_url'];
+
+    public function getSignatureUrlAttribute(){
+        return getStorageImage(GlobalConstant::PARTNERS_IMAGE_PATH, $this->signature);
+    }
 }

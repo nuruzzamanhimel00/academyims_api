@@ -25,6 +25,7 @@ class PartnersInfoResource extends JsonResource
             'District' => $this->District,
             'division' => $this->division,
             'signature' => $this->signature,
+            'signature_url' => $this->signature_url,
         ];
 
     }
