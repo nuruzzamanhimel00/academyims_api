@@ -33,11 +33,28 @@ class PartnersInfoController extends Controller
 
     public function getPartnersInfo(Request $request){
         $select = $request->select;
+        $get_type = $request->get_type;
+
         $parnerInfos = PartnersInfo::query()
         ->when(!is_null($select), function($query) use($select){
             $query->select($select);
-        })
-        ->paginate($request->per_page ?? 30);
+        });
+
+        if(isset($get_type)){
+            if($get_type == 'paginate'){
+                $parnerInfos = $parnerInfos->paginate($request->per_page ?? 30);
+
+            }else{
+                $parnerInfos =  $parnerInfos->get();
+            }
+        }else{
+            $parnerInfos =  $parnerInfos->get();
+        }
+
+        // ->when(!isset($get_type), function($query) use($request){
+        //     $query->paginate($request->per_page ?? 30);
+        // });
+
         return PartnersInfoResource::collection($parnerInfos);
     }
 
