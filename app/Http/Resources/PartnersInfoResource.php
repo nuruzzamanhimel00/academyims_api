@@ -14,7 +14,6 @@ class PartnersInfoResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        // dd($request->all());
         $db_column = ['id','partner_name','partner_type','partner_code','mobile','email','upazila_thana','district','division','signature','signature_url'];
         if(isset($request->select)){
             $make_array = [];

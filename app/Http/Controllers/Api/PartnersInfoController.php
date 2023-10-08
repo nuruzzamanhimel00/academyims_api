@@ -7,6 +7,7 @@ use App\Http\Requests\PartnersInfoRequest;
 use App\Http\Resources\PartnersInfoResource;
 use App\Models\PartnersInfo;
 use App\Services\PartnersInfos\PartnersInfoService;
+use App\Services\Utils\FileUploadService;
 use App\Traits\BaseTrait;
 use App\Utils\GlobalConstant;
 use Illuminate\Http\Request;
@@ -16,9 +17,11 @@ class PartnersInfoController extends Controller
 {
     use BaseTrait;
     protected $partnersInfoService;
+    protected $fileUploadService;
     public function __construct()
     {
         $this->partnersInfoService = resolve(PartnersInfoService::class);
+        $this->fileUploadService = app(FileUploadService::class);
     }
     /**
      * Display a listing of the resource.
@@ -57,7 +60,7 @@ class PartnersInfoController extends Controller
             $created = $this->partnersInfoService->createOrUpdate($data);
             return $this->sendResponse( new PartnersInfoResource($created), 'Partner Infos Created');
         } catch (\Exception $th) {
-            return $this->sendError('error.', ['error'=>$th->getMessage()]);
+            return $this->sendError('error', ['error'=>$th->getMessage()]);
         }
 
 
@@ -90,7 +93,7 @@ class PartnersInfoController extends Controller
             $created = $this->partnersInfoService->createOrUpdate($data, $id);
             return $this->sendResponse( new PartnersInfoResource($created), 'Partner Infos Updated');
         } catch (\Exception $th) {
-            return $this->sendError('error.', ['error'=>$th->getMessage()]);
+            return $this->sendError('error', ['error'=>$th->getMessage()]);
         }
 
     }
@@ -100,6 +103,19 @@ class PartnersInfoController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $object = $this->partnersInfoService->get($id);
+        try {
+            if(!is_null($object)){
+                $delete_path =  GlobalConstant::PARTNERS_IMAGE_PATH."/".$object->signature;
+                $this->fileUploadService->delete($delete_path);
+                if($object->delete()){
+                    return $this->sendResponse( null, 'Partner Deleted Successfully.');
+                }
+            }
+        } catch (\Exception $th) {
+            return $this->sendError('error', ['error'=>$th->getMessage()]);
+        }
+
+
     }
 }
